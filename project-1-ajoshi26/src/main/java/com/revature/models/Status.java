@@ -2,22 +2,22 @@ package com.revature.models;
 
 public class Status {
 	
-	private String id;
+	private long id;
 	private String type;
 	
 	public Status() {}
 
-	public Status(String id, String type) {
+	public Status(long id, String type) {
 		super();
 		this.id = id;
 		this.type = type;
 	}
 
-	public String getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -33,7 +33,7 @@ public class Status {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
@@ -47,10 +47,7 @@ public class Status {
 		if (getClass() != obj.getClass())
 			return false;
 		Status other = (Status) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
+		if (id != other.id)
 			return false;
 		if (type == null) {
 			if (other.type != null)
@@ -64,6 +61,8 @@ public class Status {
 	public String toString() {
 		return "Status [id=" + id + ", type=" + type + "]";
 	}
+
+	
 	
 
 }

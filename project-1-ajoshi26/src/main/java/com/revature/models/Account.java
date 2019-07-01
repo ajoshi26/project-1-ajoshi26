@@ -2,27 +2,58 @@ package com.revature.models;
 
 public class Account {
 	
-	private long Account_ID;
+	private long id;
+	private String firstName;
+	private String lastName;
+	private String email;
 	private String username;
 	private String password;
 	private String role;
 	
 	public Account(){}
 
-	public Account(long account_ID, String username, String password, String role) {
+	public Account(long id, String firstName, String lastName, String email, String username, String password,
+			String role) {
 		super();
-		Account_ID = account_ID;
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
 		this.username = username;
 		this.password = password;
 		this.role = role;
 	}
 
-	public long getAccount_ID() {
-		return Account_ID;
+	public long getId() {
+		return id;
 	}
 
-	public void setAccount_ID(long account_ID) {
-		Account_ID = account_ID;
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getUsername() {
@@ -53,7 +84,10 @@ public class Account {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (Account_ID ^ (Account_ID >>> 32));
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((role == null) ? 0 : role.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
@@ -69,7 +103,22 @@ public class Account {
 		if (getClass() != obj.getClass())
 			return false;
 		Account other = (Account) obj;
-		if (Account_ID != other.Account_ID)
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (firstName == null) {
+			if (other.firstName != null)
+				return false;
+		} else if (!firstName.equals(other.firstName))
+			return false;
+		if (id != other.id)
+			return false;
+		if (lastName == null) {
+			if (other.lastName != null)
+				return false;
+		} else if (!lastName.equals(other.lastName))
 			return false;
 		if (password == null) {
 			if (other.password != null)
@@ -91,10 +140,12 @@ public class Account {
 
 	@Override
 	public String toString() {
-		return "Account [Account_ID=" + Account_ID + ", username=" + username + ", password=" + password + ", role="
-				+ role + "]";
+		return "Account [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", username=" + username + ", password=" + password + ", role=" + role + "]";
 	}
-	
-	
 
+	
+	
+	
+	
 }

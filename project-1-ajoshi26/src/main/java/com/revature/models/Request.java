@@ -2,23 +2,27 @@ package com.revature.models;
 
 public class Request {
 	
+	private long id;
 	private String type;
-	private String status;
-	private double amount;
-	private long Request_ID;
-	private long Account_ID;
-	private long Status_ID;
+	private Status status;
+	private long accountId;
 	
 	public Request() {}
 
-	public Request(String type, String status, double amount, long request_ID, long account_ID, long status_ID) {
+	public Request(long id, String type, Status status, long accountId) {
 		super();
+		this.id = id;
 		this.type = type;
 		this.status = status;
-		this.amount = amount;
-		Request_ID = request_ID;
-		Account_ID = account_ID;
-		Status_ID = status_ID;
+		this.accountId = accountId;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getType() {
@@ -29,56 +33,28 @@ public class Request {
 		this.type = type;
 	}
 
-	public String getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 
-	public double getAmount() {
-		return amount;
+	public long getAccountId() {
+		return accountId;
 	}
 
-	public void setAmount(double amount) {
-		this.amount = amount;
-	}
-
-	public long getRequest_ID() {
-		return Request_ID;
-	}
-
-	public void setRequest_ID(long request_ID) {
-		Request_ID = request_ID;
-	}
-
-	public long getAccount_ID() {
-		return Account_ID;
-	}
-
-	public void setAccount_ID(long account_ID) {
-		Account_ID = account_ID;
-	}
-
-	public long getStatus_ID() {
-		return Status_ID;
-	}
-
-	public void setStatus_ID(long status_ID) {
-		Status_ID = status_ID;
+	public void setAccountId(long accountId) {
+		this.accountId = accountId;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (Account_ID ^ (Account_ID >>> 32));
-		result = prime * result + (int) (Request_ID ^ (Request_ID >>> 32));
-		result = prime * result + (int) (Status_ID ^ (Status_ID >>> 32));
-		long temp;
-		temp = Double.doubleToLongBits(amount);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + (int) (accountId ^ (accountId >>> 32));
+		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
@@ -93,13 +69,9 @@ public class Request {
 		if (getClass() != obj.getClass())
 			return false;
 		Request other = (Request) obj;
-		if (Account_ID != other.Account_ID)
+		if (accountId != other.accountId)
 			return false;
-		if (Request_ID != other.Request_ID)
-			return false;
-		if (Status_ID != other.Status_ID)
-			return false;
-		if (Double.doubleToLongBits(amount) != Double.doubleToLongBits(other.amount))
+		if (id != other.id)
 			return false;
 		if (status == null) {
 			if (other.status != null)
@@ -116,11 +88,10 @@ public class Request {
 
 	@Override
 	public String toString() {
-		return "Request [type=" + type + ", status=" + status + ", amount=" + amount + ", Request_ID=" + Request_ID
-				+ ", Account_ID=" + Account_ID + ", Status_ID=" + Status_ID + "]";
+		return "Request [id=" + id + ", type=" + type + ", status=" + status + ", accountId=" + accountId + "]";
 	}
 
 	
 	
-
+	
 }
