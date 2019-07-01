@@ -7,16 +7,18 @@ public class Request {
 	private double amount;
 	private long Request_ID;
 	private long Account_ID;
+	private long Status_ID;
 	
 	public Request() {}
 
-	public Request(String type, String status, double amount, long request_ID, long account_ID) {
+	public Request(String type, String status, double amount, long request_ID, long account_ID, long status_ID) {
 		super();
 		this.type = type;
 		this.status = status;
 		this.amount = amount;
 		Request_ID = request_ID;
 		Account_ID = account_ID;
+		Status_ID = status_ID;
 	}
 
 	public String getType() {
@@ -59,12 +61,21 @@ public class Request {
 		Account_ID = account_ID;
 	}
 
+	public long getStatus_ID() {
+		return Status_ID;
+	}
+
+	public void setStatus_ID(long status_ID) {
+		Status_ID = status_ID;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (int) (Account_ID ^ (Account_ID >>> 32));
 		result = prime * result + (int) (Request_ID ^ (Request_ID >>> 32));
+		result = prime * result + (int) (Status_ID ^ (Status_ID >>> 32));
 		long temp;
 		temp = Double.doubleToLongBits(amount);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
@@ -86,6 +97,8 @@ public class Request {
 			return false;
 		if (Request_ID != other.Request_ID)
 			return false;
+		if (Status_ID != other.Status_ID)
+			return false;
 		if (Double.doubleToLongBits(amount) != Double.doubleToLongBits(other.amount))
 			return false;
 		if (status == null) {
@@ -104,9 +117,9 @@ public class Request {
 	@Override
 	public String toString() {
 		return "Request [type=" + type + ", status=" + status + ", amount=" + amount + ", Request_ID=" + Request_ID
-				+ ", Account_ID=" + Account_ID + "]";
+				+ ", Account_ID=" + Account_ID + ", Status_ID=" + Status_ID + "]";
 	}
-	
+
 	
 	
 
