@@ -5,6 +5,6 @@ import com.revature.models.Account;
 public interface AccountRepository {
 
 	public boolean createAccount(Account account);
-	public boolean findUserNameAndPassword(String id, String password);
+	public boolean findUserNameAndPassword(String id, String password, String role);
 	
 }
