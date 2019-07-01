@@ -2,7 +2,9 @@ package com.revature.repositories;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -36,7 +38,7 @@ public class RequestRepositoryJDBC {
 			}
 			
 		}catch(SQLException e) {
-			LOGGER.error("Could not create user account.", e);
+			LOGGER.error("Could not create request.", e);
 		}
 		
 		return false;
@@ -44,7 +46,28 @@ public class RequestRepositoryJDBC {
 	}
 	
 	public List<Request> lookAtRequest(){
-		return null;
+		try(Connection connection = ReimbursementConnectionUtil.getConnection()) {
+			String command = "SELECT * FROM REQUEST";
+			PreparedStatement statement = connection.prepareStatement(command);
+			ResultSet result = statement.executeQuery();
+
+			List<Request> RequestList = new ArrayList<>();
+			while(result.next()) {
+				RequestList.add(new Request(
+						result.getLong("R_ID"),
+						result.getString("R_TYPE"),
+						result.getString("R_STATUS"),
+						result.getDouble("R_AMOUNT"),
+						result.getLong("A_ID"),
+						result.getLong("S_ID")
+						));
+			}
+
+			return RequestList;
+		} catch (SQLException e) {
+			LOGGER.warn("Error on selecting on all the employees", e);
+		} 
+		return new ArrayList<>();
 	}
 
 	public List<Request> lookAtRequestByEmployee(Account account){
