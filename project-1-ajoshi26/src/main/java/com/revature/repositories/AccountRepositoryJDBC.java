@@ -18,12 +18,15 @@ public class AccountRepositoryJDBC {
 		
 		try(Connection connection = ReimbursementConnectionUtil.getConnection()){
 			int parameterIndex = 0;
-			String query = "INSERT INTO ACCOUNT VALUES (?, ?, ?, ?)";
+			String query = "INSERT INTO ACCOUNT VALUES (?, ?, ?, ?, ?, ?, ?)";
 			
 			PreparedStatement UserStatement = connection.prepareStatement(query);
 			
-			UserStatement.setLong(++parameterIndex,account.getAccount_ID());
-			UserStatement.setString(++parameterIndex,account.getUsername());
+			UserStatement.setLong(++parameterIndex,account.getId());
+			UserStatement.setString(++parameterIndex,account.getFirstName());
+			UserStatement.setString(++parameterIndex, account.getLastName());
+			UserStatement.setString(++parameterIndex, account.getEmail());
+			UserStatement.setString(++parameterIndex, account.getUsername());
 			UserStatement.setString(++parameterIndex, account.getPassword());
 			UserStatement.setString(++parameterIndex, account.getRole());
 			
@@ -39,7 +42,7 @@ public class AccountRepositoryJDBC {
 		return false;
 	}
 	
-	public boolean findIDandPassword(String id, String password, String role) {
+	public boolean findAccount(String id, String password, String role) {
 		LOGGER.trace("Finding Account Information");
 
 		try(Connection connection = ReimbursementConnectionUtil.getConnection()){
