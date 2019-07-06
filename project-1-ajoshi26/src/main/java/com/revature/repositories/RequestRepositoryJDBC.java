@@ -57,7 +57,7 @@ public class RequestRepositoryJDBC implements RequestRepository {
 				RequestList.add(new Request(
 						result.getLong("R_ID"),
 						result.getString("R_TYPE"),
-						new Status(result.getLong("S_ID"),result.getString("S_TYPE")),
+						new Status(result.getLong("S_ID"),""),
 						result.getLong("A_ID")
 						));
 			}
@@ -70,36 +70,42 @@ public class RequestRepositoryJDBC implements RequestRepository {
 	}
 
 	@Override
-	public List<Request>lookAtRequestByEmployee(Request request){
+	public Request lookAtRequestByEmployee(long rID){
 		try(Connection connection = ReimbursementConnectionUtil.getConnection()) {
 
 			int parameterIndex = 0;
-			String sql = "SELECT * FROM REQUEST WHERE A_ID = ?";
+			String sql = "SELECT * FROM REQUEST WHERE R_ID = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
-			statement.setFloat(++parameterIndex,request.getAccountId());
+			statement.setLong(++parameterIndex,rID);
 			ResultSet result = statement.executeQuery();
 
-			List<Request> RequestList = new ArrayList<>();
-			while(result.next()) {
-				RequestList.add(new Request(
+			//List<Request> RequestList = new ArrayList<>();
+			if(result.next()) {
+				return new Request(
 						result.getLong("R_ID"),
 						result.getString("R_TYPE"),
-						new Status(result.getLong("R_ID"), result.getString("R_TYPE")),
+						new Status(result.getLong("S_ID"), ""),
 						result.getLong("A_ID")
-						));
+						);
 			}
 
-			return RequestList;
 		} catch (SQLException e) {
-			LOGGER.warn("Error on selecting on all the employees", e);
-		} 
-		return new ArrayList<>();
+			LOGGER.warn("Error on selecting on the employees", e);
+		}
+		return null; 
 	}
 	
 	@Override
 	public void approveOrDeny (Request request, boolean checkForApproval) {
-
+		
 	}
-
+	
+//	public static void main(String[] args) {
+//		RequestRepositoryJDBC request = new RequestRepositoryJDBC();
+//		LOGGER.info(request.lookAtRequestByEmployee(1111));
+//		
+//	}
+//	
+	
 
 }

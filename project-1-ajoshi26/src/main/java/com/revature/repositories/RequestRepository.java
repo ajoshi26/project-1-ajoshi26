@@ -9,7 +9,7 @@ public interface RequestRepository  {
 	
 	public boolean insertRequest(Request request);
 	public List<Request> lookAtRequest();
-	public List<Request> lookAtRequestByEmployee(Request request);
+	public Request lookAtRequestByEmployee(long rID);
 	public void approveOrDeny (Request request, boolean checkForApproval);
 	
 }
