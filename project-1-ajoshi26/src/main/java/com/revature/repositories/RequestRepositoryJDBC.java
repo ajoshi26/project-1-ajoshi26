@@ -18,6 +18,18 @@ public class RequestRepositoryJDBC implements RequestRepository {
 	
 	private static final Logger LOGGER = Logger.getLogger(RequestRepositoryJDBC.class);
 	
+	private static RequestRepository requestRepository = null;
+
+	private RequestRepositoryJDBC() {}
+
+	public static RequestRepository getInstance2() {
+		if(requestRepository == null) {
+			requestRepository = new RequestRepositoryJDBC();
+		}
+
+		return requestRepository;
+	}
+	
 	@Override
 	public boolean insertRequest(Request request) {
 
@@ -100,12 +112,13 @@ public class RequestRepositoryJDBC implements RequestRepository {
 	public void approveOrDeny (Request request, boolean checkForApproval) {
 		
 	}
+
 	
-	public static void main(String[] args) {
-		RequestRepositoryJDBC request = new RequestRepositoryJDBC();
-		LOGGER.info(request.insertRequest(new Request(5555,"TRAINING",6,new Status(7890,"Request not taken"))));
-		
-	}
+//	public static void main(String[] args) {
+//		RequestRepositoryJDBC request = new RequestRepositoryJDBC();
+//		LOGGER.info(request.insertRequest(new Request(5555,"TRAINING",6,new Status(7890,"Request not taken"))));
+//		
+//	}
 	
 	
 

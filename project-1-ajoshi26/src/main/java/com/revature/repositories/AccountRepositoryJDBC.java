@@ -14,6 +14,19 @@ public class AccountRepositoryJDBC implements AccountRepository {
 	
 	private static final Logger LOGGER = Logger.getLogger(AccountRepositoryJDBC.class);
 	
+	private static AccountRepository accountRepository;
+	
+	private AccountRepositoryJDBC() {}
+	
+	public static AccountRepository getInstance() {
+		if(accountRepository == null) {
+			accountRepository = new AccountRepositoryJDBC();
+		}
+		
+		return accountRepository;
+	}
+	
+	
 	@Override
 	public boolean createAccount(Account account) {
 		
@@ -44,7 +57,7 @@ public class AccountRepositoryJDBC implements AccountRepository {
 	}
 
 	@Override
-	public Account findAccount(long id) {
+	public Account findAccount(Account account) {
 		LOGGER.trace("Finding Account Information");
 
 		try(Connection connection = ReimbursementConnectionUtil.getConnection()){
@@ -52,7 +65,7 @@ public class AccountRepositoryJDBC implements AccountRepository {
 			String sql = "SELECT * FROM ACCOUNT WHERE A_ROLE = 'E' AND A_ID = ?";
 
 			PreparedStatement UserStatement = connection.prepareStatement(sql);
-			UserStatement.setLong(++parameterIndex, id);
+			UserStatement.setLong(++parameterIndex, account.getId());
 			
 			
 			ResultSet result = UserStatement.executeQuery();
@@ -72,8 +85,15 @@ public class AccountRepositoryJDBC implements AccountRepository {
 		}catch(SQLException e) {
 			LOGGER.error("Could not find Account.", e);
 		}
-		return null;
+		return new Account();
 	}
+
+//	public static void main(String[] args) {
+//		AccountRepositoryJDBC account = new AccountRepositoryJDBC();
+//		
+//		LOGGER.info(account.findAccount(new Account(2, "Shreeram","Joshi", "sjoshi21@yahoo.com",
+//				"sjoshi76", "password","E")));
+//	}
 	
 
 	
