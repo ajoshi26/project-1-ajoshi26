@@ -29,8 +29,9 @@ public class RequestRepositoryJDBC implements RequestRepository {
 
 			UserStatement.setLong(++parameterIndex, request.getId());
 			UserStatement.setString(++parameterIndex, request.getType());
-			UserStatement.setLong(++parameterIndex, request.getStatus().getId());
+			UserStatement.setString(++parameterIndex,request.getStatus().getType());
 			UserStatement.setLong(++parameterIndex, request.getAccountId());
+			UserStatement.setLong(++parameterIndex, request.getStatus().getId());
 
 
 			if(UserStatement.executeUpdate() > 0) {
@@ -57,8 +58,8 @@ public class RequestRepositoryJDBC implements RequestRepository {
 				RequestList.add(new Request(
 						result.getLong("R_ID"),
 						result.getString("R_TYPE"),
-						new Status(result.getLong("S_ID"),""),
-						result.getLong("A_ID")
+						result.getLong("A_ID"),
+						new Status(result.getLong("S_ID"),"")
 						));
 			}
 
@@ -84,8 +85,8 @@ public class RequestRepositoryJDBC implements RequestRepository {
 				return new Request(
 						result.getLong("R_ID"),
 						result.getString("R_TYPE"),
-						new Status(result.getLong("S_ID"), ""),
-						result.getLong("A_ID")
+						result.getLong("A_ID"),
+						new Status(result.getLong("S_ID"), "")
 						);
 			}
 
@@ -100,12 +101,12 @@ public class RequestRepositoryJDBC implements RequestRepository {
 		
 	}
 	
-//	public static void main(String[] args) {
-//		RequestRepositoryJDBC request = new RequestRepositoryJDBC();
-//		LOGGER.info(request.lookAtRequestByEmployee(1111));
-//		
-//	}
-//	
+	public static void main(String[] args) {
+		RequestRepositoryJDBC request = new RequestRepositoryJDBC();
+		LOGGER.info(request.insertRequest(new Request(5555,"TRAINING",6,new Status(7890,"Request not taken"))));
+		
+	}
+	
 	
 
 }
