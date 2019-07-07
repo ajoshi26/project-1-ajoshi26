@@ -7,5 +7,5 @@ import com.revature.models.Request;
 public interface RequestServiceInterface {
 	
 	public List<Request> listAllRequests();
-	
+	public boolean insertingRequests(Request request);
 }

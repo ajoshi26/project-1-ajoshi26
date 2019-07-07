@@ -11,5 +11,11 @@ public class RequestService implements RequestServiceInterface{
 	public List<Request> listAllRequests() {
 		return RequestRepositoryJDBC.getInstance2().lookAtRequest();
 	}
+
+	@Override
+	public boolean insertingRequests(Request request) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }
