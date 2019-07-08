@@ -4,11 +4,19 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-//import org.apache.log4j.Logger;
+import org.apache.log4j.Logger;
 
 public class ReimbursementConnectionUtil {
 	
-	//private static final Logger logger = Logger.getLogger(ReimbursementConnectionUtil.class);
+	private static final Logger logger = Logger.getLogger(ReimbursementConnectionUtil.class);
+	
+	static {
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		}catch(ClassNotFoundException e) {
+			logger.warn("Exception thrown adding the driver",e);
+		}
+	}
 
 	public static Connection getConnection() throws SQLException {
 		String url = "jdbc:oracle:thin:@firstinstance.cyhmny1cgean.us-east-2.rds.amazonaws.com:1521:ORCL";
