@@ -62,11 +62,12 @@ public class AccountRepositoryJDBC implements AccountRepository {
 
 		try(Connection connection = ReimbursementConnectionUtil.getConnection()){
 			int parameterIndex = 0;
-			String sql = "SELECT * FROM ACCOUNT WHERE A_USERNAME = ? AND A_PASSWORD = ?";
+			String sql = "SELECT * FROM ACCOUNT WHERE A_USERNAME = ? AND A_PASSWORD = ? AND A_ROLE = ?";
 
 			PreparedStatement UserStatement = connection.prepareStatement(sql);
 			UserStatement.setString(++parameterIndex, account.getUsername());
 			UserStatement.setString(++parameterIndex, account.getPassword());
+			UserStatement.setString(++parameterIndex, account.getRole());
 			
 			
 			ResultSet result = UserStatement.executeQuery();
@@ -87,6 +88,35 @@ public class AccountRepositoryJDBC implements AccountRepository {
 			LOGGER.error("Could not find Account.", e);
 		}
 		return new Account();
+	}
+
+	@Override
+	public boolean updateAccount(Account account) {
+		try(Connection connection = ReimbursementConnectionUtil.getConnection()){
+			int parameterIndex = 0;
+			String query = "UPDATE ACCOUNT SET A_ID = ?, A_FIRST_NAME = ?, A_LAST_NAME = ?, A_EMAIL = ?"
+					+ "A_USERNAME = ?, A_PASSWORD = ?, A_ROLE = ? WHERE A_USERNAME = A_USERNAME";
+			
+			PreparedStatement UserStatement = connection.prepareStatement(query);
+			
+			UserStatement.setLong(++parameterIndex,account.getId());
+			UserStatement.setString(++parameterIndex,account.getFirstName());
+			UserStatement.setString(++parameterIndex, account.getLastName());
+			UserStatement.setString(++parameterIndex, account.getEmail());
+			UserStatement.setString(++parameterIndex, account.getUsername());
+			UserStatement.setString(++parameterIndex, account.getPassword());
+			UserStatement.setString(++parameterIndex, account.getRole());
+			
+			
+			if(UserStatement.executeUpdate() > 0) {
+				return true;
+			}
+			
+		}catch(SQLException e) {
+			LOGGER.error("Could not create user account.", e);
+		}
+		
+		return false;
 	}
 
 //	public static void main(String[] args) {
