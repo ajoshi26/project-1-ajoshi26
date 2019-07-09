@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -118,6 +120,34 @@ public class AccountRepositoryJDBC implements AccountRepository {
 		
 		return false;
 	}
+
+	@Override
+	public List<Account> selectAll() {
+		try(Connection connection = ReimbursementConnectionUtil.getConnection()) {
+			String command = "SELECT * FROM CUSTOMER";
+			PreparedStatement statement = connection.prepareStatement(command);
+			ResultSet result = statement.executeQuery();
+
+			List<Account> customerList = new ArrayList<>();
+			while(result.next()) {
+				customerList.add(new Account(
+						result.getInt("A_ID"),
+						result.getString("A_FIRST_NAME"),
+						result.getString("A_LAST_NAME"),
+						result.getString("A_EMAIL"),
+						result.getString("A_USERNAME"),
+						result.getString("A_PASSWORD"),
+						result.getString("A_ROLE")
+						));
+			}
+
+			return customerList;
+		} catch (SQLException e) {
+			LOGGER.warn("Exception selecting all customers", e);
+		} 
+		return new ArrayList<>();
+	}
+
 
 //	public static void main(String[] args) {
 //		AccountRepositoryJDBC account = new AccountRepositoryJDBC();
