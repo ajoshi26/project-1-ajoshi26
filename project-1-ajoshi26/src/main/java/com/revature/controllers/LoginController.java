@@ -2,14 +2,16 @@ package com.revature.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
+
 import com.revature.models.Account;
-import com.revature.repositories.AccountRepository;
 import com.revature.repositories.AccountRepositoryJDBC;
 import com.revature.services.AccountService;
 
 public class LoginController implements LoginControllerInterface{
 
 	private static LoginControllerInterface loginController = new LoginController();
+	private static final Logger LOGGER = Logger.getLogger(LoginController.class);
 
 	private LoginController() {}
 	
@@ -18,19 +20,42 @@ public class LoginController implements LoginControllerInterface{
 	}
 	
 	
-
-	
 	@Override
 	public Object login(HttpServletRequest request) {
 		if(request.getMethod().equals("GET")) {
 			return "login.html";
 		}
-		return null;
 		
-//		Account loggedCustomer = AccountService.getInstance().authenticate(
-//					new Account(request.getParameter("username"),
-//								 request.getParameter("password"))
-//);
+		
+		Account loggedIn = AccountService.getInstance().checkAccount(new Account(0,null,null,
+				null,request.getParameter("username"),request.getParameter("password"),
+				request.getParameter("role")));
+		
+		LOGGER.trace("About to login in...");
+		
+		if(loggedIn == null) {
+			LOGGER.warn("Could not login");
+			return "AUTHENTICATION_FAILED";
+		}
+		
+		LOGGER.info("Login Successful!");
+		request.getSession().setAttribute("loggedIn", loggedIn);
+		
+		if(request.getParameter("role") == "M") {
+			return "Manager.html";
+		}
+		else if(request.getParameter("role") == "E") {
+			return "Employee.html";
+		}
+			
+			
+		return loggedIn;
+		
+	}
+	
+	@Override
+	public Object update(HttpServletRequest request) {
+		return null; 
 	}
 
 	@Override
@@ -38,6 +63,8 @@ public class LoginController implements LoginControllerInterface{
 		request.getSession().invalidate();
 		return "login.html";
 	}
+
+
 
 	
 	
