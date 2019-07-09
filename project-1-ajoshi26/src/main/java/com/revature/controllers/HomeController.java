@@ -17,7 +17,8 @@ public class HomeController implements HomeControllerInterface {
 
 	@Override
 	public String home(HttpServletRequest request) {
-		Account loggedInAccount = (Account)request.getSession().getAttribute("loggedAccount");
+		Account loggedInAccount = (Account)request.getSession().getAttribute("loggedIn");
+		
 		if(loggedInAccount == null) {
 			return "login.html";
 		}
