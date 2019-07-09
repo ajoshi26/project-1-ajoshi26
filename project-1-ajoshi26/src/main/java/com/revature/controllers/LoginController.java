@@ -52,13 +52,6 @@ public class LoginController implements LoginControllerInterface{
 		return loggedIn;
 		
 	}
-	
-	@Override
-	public Object update(HttpServletRequest request) {
-		return  AccountService.getInstance().updateAccount(new Account(0,request.getParameter("firstName"),
-				request.getParameter("lastName"),request.getParameter("email"),
-				request.getParameter("username"),request.getParameter("password"),request.getParameter("role")));
-	}
 
 	@Override
 	public String logout(HttpServletRequest request) {
