@@ -11,7 +11,7 @@ public class AccountService implements AccountServiceInterface {
 	
 	public static AccountServiceInterface getInstance() {
 		return accountService;
-}
+	}
 
 	@Override
 	public boolean registerNewAccount(Account account) {
@@ -20,14 +20,25 @@ public class AccountService implements AccountServiceInterface {
 
 	@Override
 	public Account checkAccount(Account account) {
-		Account loggedIn = AccountRepositoryJDBC.getInstance().findAccount(account);
+		Account loggedInAccount = AccountRepositoryJDBC.getInstance().findAccount(account);
 		
-		if((loggedIn.getPassword().equals(account.getPassword()) && 
-			(loggedIn.getUsername().equals(account.getUsername())))) {
-			return loggedIn;
+		if((loggedInAccount.getUsername().equals(account.getUsername()) && 
+			(loggedInAccount.getPassword().equals(account.getPassword())))){
+			
+			return loggedInAccount;
 		}
 		
 		return null;
+		
 	}
+
+	@Override
+	public boolean updateAccount(Account account) {
+		return AccountRepositoryJDBC.getInstance().updateAccount(account);
+	}
+	
+	
+	
+	
 
 }
