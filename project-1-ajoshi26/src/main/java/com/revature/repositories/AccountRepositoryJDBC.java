@@ -62,10 +62,11 @@ public class AccountRepositoryJDBC implements AccountRepository {
 
 		try(Connection connection = ReimbursementConnectionUtil.getConnection()){
 			int parameterIndex = 0;
-			String sql = "SELECT * FROM ACCOUNT WHERE A_ROLE = 'E' AND A_ID = ?";
+			String sql = "SELECT * FROM ACCOUNT WHERE A_USERNAME = ? AND A_PASSWORD = ?";
 
 			PreparedStatement UserStatement = connection.prepareStatement(sql);
-			UserStatement.setLong(++parameterIndex, account.getId());
+			UserStatement.setString(++parameterIndex, account.getUsername());
+			UserStatement.setString(++parameterIndex, account.getPassword());
 			
 			
 			ResultSet result = UserStatement.executeQuery();
