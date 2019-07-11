@@ -41,15 +41,15 @@ public class LoginController implements LoginControllerInterface{
 		LOGGER.info("Login Successful!");
 		request.getSession().setAttribute("loggedIn", loggedIn);
 		
-		if(request.getParameter("role") == "M") {
-			return "Manager.html";
+		if(request.getParameter("role").equals("M")) {
+			return HomeController.getInstance().ManagerHome(request);
 		}
-		else if(request.getParameter("role") == "E") {
-			return "Employee.html";
+		else if(request.getParameter("role").equals("E")) {
+			return HomeController.getInstance().EmployeeHome(request);
 		}
 			
 			
-		return loggedIn;
+		return null;
 		
 	}
 
@@ -59,9 +59,6 @@ public class LoginController implements LoginControllerInterface{
 		return "login.html";
 	}
 
-
-
-	
 	
 
 }
