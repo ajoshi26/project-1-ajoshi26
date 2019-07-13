@@ -16,14 +16,27 @@ public class HomeController implements HomeControllerInterface {
 }
 
 	@Override
-	public String home(HttpServletRequest request) {
+	public String EmployeeHome(HttpServletRequest request) {
 		Account loggedInAccount = (Account)request.getSession().getAttribute("loggedIn");
 		
 		if(loggedInAccount == null) {
 			return "login.html";
 		}
 
-		return "home.html";
+		return "Employee.html";
 	}
+
+	@Override
+	public String ManagerHome(HttpServletRequest request) {
+		Account loggedInAccount = (Account)request.getSession().getAttribute("loggedIn");
+		
+		if(loggedInAccount == null) {
+			return "login.html";
+		}
+
+		return "Manager.html";
+	}
+	
+	
 
 }

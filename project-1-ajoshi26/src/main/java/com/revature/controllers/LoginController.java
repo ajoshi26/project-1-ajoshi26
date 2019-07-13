@@ -59,6 +59,14 @@ public class LoginController implements LoginControllerInterface{
 		return "login.html";
 	}
 
-	
+	@Override
+	public Object viewAccount(HttpServletRequest request) {
+		
+		Account loggedIn = AccountService.getInstance().viewOneAccount(new Account(null,null,
+				null,request.getParameter("username"),request.getParameter("password"),
+				request.getParameter("role")));
+		
+		return request.getSession().getAttribute("loggedIn");
+	}
 
 }
