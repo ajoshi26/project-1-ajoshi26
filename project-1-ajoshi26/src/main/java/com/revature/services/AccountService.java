@@ -43,6 +43,12 @@ public class AccountService implements AccountServiceInterface {
 	public List <Account> viewAccount() {
 		return AccountRepositoryJDBC.getInstance().selectAll();
 	}
+
+	@Override
+	public Account viewOneAccount(Account account) {
+		return AccountRepositoryJDBC.getInstance().selectAccountByID(account);
+
+	}
 	
 	
 	
