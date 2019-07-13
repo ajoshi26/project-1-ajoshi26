@@ -34,6 +34,8 @@ public class AccountRepositoryJDBC implements AccountRepository {
 		
 		try(Connection connection = ReimbursementConnectionUtil.getConnection()){
 			int parameterIndex = 0;
+			
+			//Put sequence into the first parameter (seq_ID.nextval)
 			String query = "INSERT INTO ACCOUNT VALUES (?, ?, ?, ?, ?, ?, ?)";
 			
 			PreparedStatement UserStatement = connection.prepareStatement(query);
@@ -124,9 +126,10 @@ public class AccountRepositoryJDBC implements AccountRepository {
 	@Override
 	public List<Account> selectAll() {
 		try(Connection connection = ReimbursementConnectionUtil.getConnection()) {
-			String command = "SELECT * FROM CUSTOMER";
+			String command = "SELECT * FROM ACCOUNT WHERE A_ROLE = 'E'";
 			PreparedStatement statement = connection.prepareStatement(command);
 			ResultSet result = statement.executeQuery();
+			
 
 			List<Account> customerList = new ArrayList<>();
 			while(result.next()) {
@@ -146,6 +149,36 @@ public class AccountRepositoryJDBC implements AccountRepository {
 			LOGGER.warn("Exception selecting all customers", e);
 		} 
 		return new ArrayList<>();
+	}
+	
+	public Account selectAccountByID(Account account) {
+		try(Connection connection = ReimbursementConnectionUtil.getConnection()) {
+			int parameterIndex = 0;
+			String sql = "SELECT * FROM ACCOUNT WHERE A_ROLE = 'E' AND A_ID = ?";
+
+			PreparedStatement UserStatement = connection.prepareStatement(sql);
+			UserStatement.setLong(++parameterIndex, account.getId());
+			
+			
+			ResultSet result = UserStatement.executeQuery();
+			
+			if(result.next()) {
+				LOGGER.trace("Found Account");
+				return new Account(
+						result.getLong("A_ID"),
+						result.getString("A_FIRST_NAME"),
+						result.getString("A_LAST_NAME"),
+						result.getString("A_EMAIL"),
+						result.getString("A_USERNAME"),
+						result.getString("A_PASSWORD"),
+						result.getString("A_ROLE"));
+			}
+
+		} catch (SQLException e) {
+			LOGGER.warn("Exception selecting employee", e);
+		} 
+		
+		return new Account();
 	}
 
 
