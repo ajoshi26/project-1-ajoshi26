@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.revature.models.Account;
 import com.revature.models.Request;
 import com.revature.models.Status;
 import com.revature.util.ReimbursementConnectionUtil;
@@ -71,7 +70,7 @@ public class RequestRepositoryJDBC implements RequestRepository {
 						result.getLong("R_ID"),
 						result.getString("R_TYPE"),
 						result.getLong("A_ID"),
-						new Status(result.getLong("S_ID"),"")
+						new Status(result.getLong("S_ID"),result.getString("R_STATUS"))
 						));
 			}
 
@@ -98,7 +97,7 @@ public class RequestRepositoryJDBC implements RequestRepository {
 						result.getLong("R_ID"),
 						result.getString("R_TYPE"),
 						result.getLong("A_ID"),
-						new Status(result.getLong("S_ID"), "")
+						new Status(result.getLong("S_ID"), result.getString("R_STATUS"))
 						);
 			}
 
@@ -109,14 +108,32 @@ public class RequestRepositoryJDBC implements RequestRepository {
 	}
 	
 	@Override
-	public void approveOrDeny (Request request, boolean checkForApproval) {
+	public boolean updateRequest(Request request) {
 		
+		try(Connection connection = ReimbursementConnectionUtil.getConnection()) {
+
+			int parameterIndex = 0;
+			String sql = "UPDATE REQUEST SET S_ID=? WHERE R_ID=?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setLong(++parameterIndex,request.getStatus().getId());
+			statement.setLong(++parameterIndex,request.getId());
+			ResultSet result = statement.executeQuery();
+
+			if(result.next()) {
+				
+			}
+
+		} catch (SQLException e) {
+			LOGGER.warn("Error on selecting on the employees", e);
 	}
+		
+		return false;
+}
 
 	
 //	public static void main(String[] args) {
 //		RequestRepositoryJDBC request = new RequestRepositoryJDBC();
-//		LOGGER.info(request.insertRequest(new Request(5555,"TRAINING",6,new Status(7890,"Request not taken"))));
+//		LOGGER.info(request.lookAtRequest());
 //		
 //	}
 	
