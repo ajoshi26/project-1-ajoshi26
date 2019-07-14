@@ -59,6 +59,37 @@ public class RegisterController implements RegisterControllerInterface{
 	public Object insertRequests(HttpServletRequest request) {
 		return RequestService.getInstance().insertingRequests(new Request(request.getParameter("requestType")));
 	}
+	
+	@Override
+	public Object updateRequests(HttpServletRequest request) {
+		return RequestService.getInstance().listRequestbyID(new Request(Long.parseLong(request.getParameter("RequestID")),null,
+				request.getParameter("RequestType"),0));
+	}
+
+	@Override
+	public Object viewPendingRequests(HttpServletRequest request) {
+		return RequestService.getInstance().listAllPendingRequests();
+	}
+
+	@Override
+	public Object viewResolvedRequests(HttpServletRequest request) {
+		return RequestService.getInstance().listAllResolvedRequests();
+	}
+	
+	@Override
+	public Object viewRequestsbyEmployee(HttpServletRequest request) {
+		return RequestService.getInstance().listRequestbyID(new Request(0,null,null,Long.parseLong(request.getParameter("accountID"))));
+	}
+
+	@Override
+	public Object viewPendingRequestsByID(HttpServletRequest request) {
+		return RequestService.getInstance().listPendingRequestsbyID(new Request(0,null,null,Long.parseLong(request.getParameter("accountID"))));
+	}
+
+	@Override
+	public Object viewResolvedRequestsByID(HttpServletRequest request) {
+		return RequestService.getInstance().listResolvedRequestsbyID(new Request(0,null,null,Long.parseLong(request.getParameter("accountID"))));
+	}
 
 
 }
