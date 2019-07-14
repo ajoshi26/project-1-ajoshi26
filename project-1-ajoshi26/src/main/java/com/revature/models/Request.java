@@ -4,50 +4,65 @@ public class Request {
 	
 	private long id;
 	private String type;
-	private Status status;
+	private String status;
 	private long accountId;
+
 	
 	public Request() {}
 
-	public Request(long id, String type, Status status, long accountId) {
-		super();
+
+	public Request(long id, String type, String status, long accountId) {
 		this.id = id;
 		this.type = type;
 		this.status = status;
 		this.accountId = accountId;
 	}
+	
+
+	public Request(String type) {
+		this.type = type;
+	}
+
 
 	public long getId() {
 		return id;
 	}
 
+
 	public void setId(long id) {
 		this.id = id;
 	}
+
 
 	public String getType() {
 		return type;
 	}
 
+
 	public void setType(String type) {
 		this.type = type;
 	}
 
-	public Status getStatus() {
+
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(Status status) {
+
+	public void setStatus(String status) {
 		this.status = status;
 	}
+
 
 	public long getAccountId() {
 		return accountId;
 	}
 
+
 	public void setAccountId(long accountId) {
 		this.accountId = accountId;
 	}
+
 
 	@Override
 	public int hashCode() {
@@ -59,6 +74,7 @@ public class Request {
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -86,12 +102,13 @@ public class Request {
 		return true;
 	}
 
+
 	@Override
 	public String toString() {
 		return "Request [id=" + id + ", type=" + type + ", status=" + status + ", accountId=" + accountId + "]";
 	}
+	
+	
 
-	
-	
 	
 }
