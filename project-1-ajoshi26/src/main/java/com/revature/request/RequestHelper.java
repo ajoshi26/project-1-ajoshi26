@@ -15,10 +15,20 @@ public class RequestHelper {
 			return LoginController.getInstance().login(request);
 		case "/project-1-ajoshi26/logout.do":
 			return LoginController.getInstance().logout(request);
-		case "/project-1-ajoshi26/home.do":
-			return HomeController.getInstance().home(request);
+		case "/project-1-ajoshi26/employeehome.do":
+			return HomeController.getInstance().EmployeeHome(request);
+		case "/project-1-ajoshi26/managerhome.do":
+			return HomeController.getInstance().ManagerHome(request);
 		case "/project-1-ajoshi26/register.do":
 			return RegisterController.getInstance().register(request);
+		case "/project-1-ajoshi26/viewMyAccount.do":
+			return LoginController.getInstance().viewAccount(request);
+		case "/project-1-ajoshi26/updateAccount.do":
+			return RegisterController.getInstance().updateInfo(request);
+		case "/project-1-ajoshi26/insertRequest.do":
+			return RegisterController.getInstance().insertRequests(request);
+		case "/project-1-ajoshi26/viewAllAccounts.do":
+			return RegisterController.getInstance().viewEmployees(request);		
 		default:
 			return "404";
 		}
