@@ -10,7 +10,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.revature.models.Request;
-import com.revature.models.Status;
 import com.revature.util.ReimbursementConnectionUtil;
 
 public class RequestRepositoryJDBC implements RequestRepository {
@@ -34,15 +33,13 @@ public class RequestRepositoryJDBC implements RequestRepository {
 
 		try(Connection connection = ReimbursementConnectionUtil.getConnection()){
 			int parameterIndex = 0;
-			String query = "INSERT INTO REQUEST VALUES (?, ?, ?, ?, ?)";
+			String query = "INSERT INTO REQUEST VALUES (?, ?, 'Request not taken', ?)";
 
 			PreparedStatement UserStatement = connection.prepareStatement(query);
 
 			UserStatement.setLong(++parameterIndex, request.getId());
 			UserStatement.setString(++parameterIndex, request.getType());
-			UserStatement.setString(++parameterIndex,request.getStatus().getType());
 			UserStatement.setLong(++parameterIndex, request.getAccountId());
-			UserStatement.setLong(++parameterIndex, request.getStatus().getId());
 
 
 			if(UserStatement.executeUpdate() > 0) {
@@ -69,9 +66,9 @@ public class RequestRepositoryJDBC implements RequestRepository {
 				RequestList.add(new Request(
 						result.getLong("R_ID"),
 						result.getString("R_TYPE"),
-						result.getLong("A_ID"),
-						new Status(result.getLong("S_ID"),result.getString("R_STATUS"))
-						));
+						result.getString("R_STATUS"),
+						result.getLong("A_ID"))
+						);
 			}
 
 			return RequestList;
@@ -96,9 +93,8 @@ public class RequestRepositoryJDBC implements RequestRepository {
 				return new Request(
 						result.getLong("R_ID"),
 						result.getString("R_TYPE"),
-						result.getLong("A_ID"),
-						new Status(result.getLong("S_ID"), result.getString("R_STATUS"))
-						);
+						result.getString("R_STATUS"),
+						result.getLong("A_ID"));
 			}
 
 		} catch (SQLException e) {
@@ -113,14 +109,13 @@ public class RequestRepositoryJDBC implements RequestRepository {
 		try(Connection connection = ReimbursementConnectionUtil.getConnection()) {
 
 			int parameterIndex = 0;
-			String sql = "UPDATE REQUEST SET S_ID=? WHERE R_ID=?";
+			String sql = "UPDATE SET R_STATUS = ? WHERE A_ID = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
-			statement.setLong(++parameterIndex,request.getStatus().getId());
 			statement.setLong(++parameterIndex,request.getId());
 			ResultSet result = statement.executeQuery();
 
-			if(result.next()) {
-				
+			if(statement.executeUpdate() > 0) {
+				return true;
 			}
 
 		} catch (SQLException e) {
