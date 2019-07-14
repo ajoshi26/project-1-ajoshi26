@@ -55,9 +55,33 @@ public class RequestRepositoryJDBC implements RequestRepository {
 	}
 
 	@Override
-	public List<Request> lookAtRequest(){
+	public List<Request> lookAtPendingRequests(){
 		try(Connection connection = ReimbursementConnectionUtil.getConnection()) {
-			String command = "SELECT * FROM REQUEST";
+			String command = "SELECT * FROM REQUEST WHERE R_STATUS = 'Request not taken'";
+			PreparedStatement statement = connection.prepareStatement(command);
+			ResultSet result = statement.executeQuery();
+
+			List<Request> RequestList = new ArrayList<>();
+			while(result.next()) {
+				RequestList.add(new Request(
+						result.getLong("R_ID"),
+						result.getString("R_TYPE"),
+						result.getString("R_STATUS"),
+						result.getLong("A_ID"))
+						);
+			}
+
+			return RequestList;
+		} catch (SQLException e) {
+			LOGGER.warn("Error on selecting on all the employees", e);
+		} 
+		return new ArrayList<>();
+	}
+	
+	@Override
+	public List<Request> lookAtResolvedRequests() {
+		try(Connection connection = ReimbursementConnectionUtil.getConnection()) {
+			String command = "SELECT * FROM REQUEST WHERE R_STATUS = 'Accept' OR R_STATUS = 'Deny'";
 			PreparedStatement statement = connection.prepareStatement(command);
 			ResultSet result = statement.executeQuery();
 
@@ -79,13 +103,13 @@ public class RequestRepositoryJDBC implements RequestRepository {
 	}
 
 	@Override
-	public Request lookAtRequestByEmployee(long rID){
+	public Request lookAtRequestByEmployee(Request request){
 		try(Connection connection = ReimbursementConnectionUtil.getConnection()) {
 
 			int parameterIndex = 0;
-			String sql = "SELECT * FROM REQUEST WHERE R_ID = ?";
+			String sql = "SELECT * FROM REQUEST WHERE A_ID = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
-			statement.setLong(++parameterIndex,rID);
+			statement.setLong(++parameterIndex,request.getAccountId());
 			ResultSet result = statement.executeQuery();
 
 			//List<Request> RequestList = new ArrayList<>();
@@ -104,12 +128,65 @@ public class RequestRepositoryJDBC implements RequestRepository {
 	}
 	
 	@Override
+	public Request lookAtPendingRequestByID(Request request) {
+		try(Connection connection = ReimbursementConnectionUtil.getConnection()) {
+			String command = "SELECT * FROM REQUEST WHERE R_STATUS = 'Request not taken' AND A_ID = ?";
+			PreparedStatement statement = connection.prepareStatement(command);
+			
+			int parameterIndex = 0;
+			
+			statement.setLong(++parameterIndex,request.getAccountId());
+			ResultSet result = statement.executeQuery();
+
+			//List<Request> RequestList = new ArrayList<>();
+			if(result.next()) {
+				return new Request(
+						result.getLong("R_ID"),
+						result.getString("R_TYPE"),
+						result.getString("R_STATUS"),
+						result.getLong("A_ID"));
+			}
+		} catch (SQLException e) {
+			LOGGER.warn("Error on selecting on all the employees", e);
+		} 
+		return null;
+	}
+
+	@Override
+	public Request lookAtResolvedRequestsByID(Request request) {
+
+		try(Connection connection = ReimbursementConnectionUtil.getConnection()) {
+			String command = "SELECT * FROM REQUEST WHERE R_STATUS = 'Accept' OR R_STATUS = 'DENY' AND A_ID = ?";
+			PreparedStatement statement = connection.prepareStatement(command);
+
+			int parameterIndex = 0;
+
+			statement.setLong(++parameterIndex,request.getAccountId());
+			ResultSet result = statement.executeQuery();
+
+			//List<Request> RequestList = new ArrayList<>();
+			if(result.next()) {
+				return new Request(
+						result.getLong("R_ID"),
+						result.getString("R_TYPE"),
+						result.getString("R_STATUS"),
+						result.getLong("A_ID"));
+			} 
+		}
+		catch (SQLException e) {
+			LOGGER.warn("Error on selecting on all the employees", e); 
+		}
+		
+		return null;
+	}
+	
+	@Override
 	public boolean updateRequest(Request request) {
 		
 		try(Connection connection = ReimbursementConnectionUtil.getConnection()) {
 
 			int parameterIndex = 0;
-			String sql = "UPDATE SET R_STATUS = ? WHERE A_ID = ?";
+			String sql = "UPDATE SET R_STATUS = ? WHERE R_ID = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setLong(++parameterIndex,request.getId());
 			ResultSet result = statement.executeQuery();
@@ -132,6 +209,5 @@ public class RequestRepositoryJDBC implements RequestRepository {
 //		
 //	}
 	
-	
+	}
 
-}
