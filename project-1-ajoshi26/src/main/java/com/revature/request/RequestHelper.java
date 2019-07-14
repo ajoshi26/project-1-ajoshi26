@@ -25,10 +25,22 @@ public class RequestHelper {
 			return LoginController.getInstance().viewAccount(request);
 		case "/project-1-ajoshi26/updateAccount.do":
 			return RegisterController.getInstance().updateInfo(request);
+		case "/project-1-ajoshi26/viewAllAccounts.do":
+			return RegisterController.getInstance().viewEmployees(request);
+		case "/project-1-ajoshi26/updateRequests.do":
+			return RegisterController.getInstance().updateRequests(request);
 		case "/project-1-ajoshi26/insertRequest.do":
 			return RegisterController.getInstance().insertRequests(request);
-		case "/project-1-ajoshi26/viewAllAccounts.do":
-			return RegisterController.getInstance().viewEmployees(request);		
+		case "/project-1-ajoshi26/lookRequestByID.do":
+			return RegisterController.getInstance().viewRequestsbyEmployee(request);
+		case "/project-1-ajoshi26/viewPendingRequests.do":
+			return RegisterController.getInstance().viewPendingRequests(request);
+		case "/project-1-ajoshi26/viewResolvedRequests.do":
+			return RegisterController.getInstance().viewPendingRequests(request);
+		case "/project-1-ajoshi26/viewPendingRequestsID.do":
+			return RegisterController.getInstance().viewPendingRequestsByID(request);
+		case "/project-1-ajoshi26/viewResolvedRequestsID.do":
+			return RegisterController.getInstance().viewResolvedRequestsByID(request);
 		default:
 			return "404";
 		}
