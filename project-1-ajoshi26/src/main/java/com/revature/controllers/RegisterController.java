@@ -3,8 +3,9 @@ package com.revature.controllers;
 import javax.servlet.http.HttpServletRequest;
 
 import com.revature.models.Account;
-import com.revature.repositories.AccountRepositoryJDBC;
+import com.revature.models.Request;
 import com.revature.services.AccountService;
+import com.revature.services.RequestService;
 
 public class RegisterController implements RegisterControllerInterface{
 	
@@ -55,9 +56,8 @@ public class RegisterController implements RegisterControllerInterface{
 	}
 
 	@Override
-	public Object updateRequests(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object insertRequests(HttpServletRequest request) {
+		return RequestService.getInstance().insertingRequests(new Request(request.getParameter("requestType")));
 	}
 
 
