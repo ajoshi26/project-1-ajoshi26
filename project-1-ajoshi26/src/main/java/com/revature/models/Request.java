@@ -22,7 +22,7 @@ public class Request {
 	public Request(String type) {
 		this.type = type;
 	}
-
+	
 
 	public long getId() {
 		return id;
